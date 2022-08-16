@@ -28,7 +28,7 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Permission::orderBy('id','DESC')->paginate(5);
+        $data = Permission::orderBy('id','DESC')->paginate(20);
 
         return view('permissions.index', compact('data'));
     }
@@ -54,9 +54,9 @@ class PermissionController extends Controller
         $this->validate($request, [
             'name' => 'required|unique:permissions,name',
         ]);
-    
+
         Permission::create(['name' => $request->input('name')]);
-    
+
         return redirect()->route('permissions.index')
             ->with('success', 'Permission created successfully.');
     }
@@ -70,7 +70,7 @@ class PermissionController extends Controller
     public function show($id)
     {
         $permission = Permission::find($id);
-    
+
         return view('permissions.show', compact('permission'));
     }
 
@@ -83,7 +83,7 @@ class PermissionController extends Controller
     public function edit($id)
     {
         $permission = Permission::find($id);
-    
+
         return view('permissions.edit', compact('permission'));
     }
 
@@ -99,11 +99,11 @@ class PermissionController extends Controller
         $this->validate($request, [
             'name' => 'required'
         ]);
-    
+
         $permission = Permission::find($id);
         $permission->name = $request->input('name');
         $permission->save();
-        
+
         return redirect()->route('permissions.index')
             ->with('success', 'Permission updated successfully.');
     }
@@ -117,7 +117,7 @@ class PermissionController extends Controller
     public function destroy($id)
     {
         Permission::find($id)->delete();
-        
+
         return redirect()->route('permissions.index')
             ->with('success', 'Permission deleted successfully');
     }
